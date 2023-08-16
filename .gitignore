@@ -1,2 +1,5 @@
 .env
-API.py
+.idea
+.gitattributes
+__pycache__/
+/API.py
