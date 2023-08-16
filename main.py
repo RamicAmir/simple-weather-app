@@ -1,16 +1,9 @@
-from tkinter import *
-from API import *
+# weather_logic.py
 import requests
 from datetime import datetime
+from API import *
 
-
-root = Tk()
-root.geometry("400x400")  # default size window
-root.resizable(0, 0)  # Fixed window size
-
-root.title("Weather App")
-
-city_value = StringVar()
+API = API_KEY
 
 
 def time_format_for_location(utc_with_tz):
@@ -18,21 +11,14 @@ def time_format_for_location(utc_with_tz):
     return local_time.time()
 
 
-city_value = StringVar()
-
-
-def show_weather():
+def get_weather_info(city_name):
     api_key = API_KEY
-
-    city_name = city_value.get()
 
     weather_url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city_name + '&appid=' + api_key
 
     response = requests.get(weather_url)
 
     weather_info = response.json()
-
-    t_field.delete("1.0", "end")
 
     if weather_info['cod'] == 200:
         kelvin = 273  # value of kelvin
@@ -58,24 +44,5 @@ def show_weather():
     else:
         weather = f"\n\tWeather for '{city_name}' not found!\n\tKindly Enter valid City Name !!"
 
-    t_field.insert(INSERT, weather)  # to insert or send value in our Text Field to display output
+    return weather
 
-
-# ------------------------------Frontend part of code - Interface
-
-
-Label(root, text='Enter City Name', font='Arial 12 bold').pack(pady=10)
-
-Entry(root, textvariable=city_value, width=24, font='Arial 14 bold').pack()
-
-Button(root, command=show_weather, text="Check Weather", font="Arial 10", bg='lightblue', fg='black',
-       activebackground="teal", padx=5, pady=5).pack(pady=20)
-
-# to show output
-
-Label(root, text="The Weather is:", font='arial 12 bold').pack(pady=10)
-
-t_field = Text(root, width=46, height=10)
-t_field.pack()
-
-root.mainloop()
