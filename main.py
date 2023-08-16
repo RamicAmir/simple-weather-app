@@ -1,4 +1,3 @@
-# weather_logic.py
 import requests
 from datetime import datetime
 from API import *
